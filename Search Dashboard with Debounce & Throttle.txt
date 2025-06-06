@@ -1,0 +1,78 @@
+1️⃣ Search Functionality with Debouncing
+
+
+Generate a large array of names: You can use an array with manually added names or auto-generate random names with loops.
+
+Create the search input box: Attach an event listener to capture input changes.
+
+Debounced search (1s delay): Use setTimeout inside an input event listener to delay execution.
+
+Display matching names: Filter the array based on user input and display matches dynamically.
+
+
+const names = [...Array(200)].map(() => "Name" + Math.floor(Math.random() * 1000)); // Example random names
+
+const searchBox = document.getElementById("search");
+const resultsContainer = document.getElementById("results");
+
+let debounceTimeout;
+searchBox.addEventListener("input", () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+        const query = searchBox.value.toLowerCase();
+        const filteredNames = names.filter(name => name.toLowerCase().includes(query));
+        resultsContainer.innerHTML = filteredNames.map(name => `<div>${name}</div>`).join('');
+    }, 1000);
+});
+
+
+
+2️⃣ Throttled Scroll Listener for "Back to Top"
+
+Button visibility condition: Show it only when the user scrolls down 200px.
+
+Throttle scroll event (every 500ms): Limit event execution frequency using setTimeout or requestAnimationFrame.
+
+const backToTop = document.getElementById("backToTop");
+let throttleTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!throttleTimeout) {
+        throttleTimeout = setTimeout(() => {
+            backToTop.style.display = window.scrollY > 200 ? "block" : "none";
+            throttleTimeout = null;
+        }, 500);
+    }
+});
+
+
+
+3️⃣ Typing Stats Counter
+
+Total keystrokes: Count user inputs.
+
+Debounced search triggers: Track how many times the debounce function executes.
+
+let totalKeystrokes = 0;
+let debounceTriggerCount = 0;
+
+searchBox.addEventListener("input", () => {
+    totalKeystrokes++;
+    document.getElementById("keystrokeCount").innerText = `Total Keystrokes: ${totalKeystrokes}`;
+    
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+        debounceTriggerCount++;
+        document.getElementById("debouncedCount").innerText = `Debounced Searches: ${debounceTriggerCount}`;
+    }, 1000);
+});
+
+
+
+4️⃣ Styling & UI Enhancements
+
+Center the search box and result list using basic CSS.
+
+Highlight matched text: Wrap matched portions in <span style="background-color:yellow;"> dynamically.
+
+Fixed & stylish "Back to Top" button: Use position: fixed; bottom: 10px; right: 10px; in CSS.
